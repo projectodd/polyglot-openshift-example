@@ -1,7 +1,8 @@
 (ns pingpong.core
   (:use compojure.core)
   (:require [compojure.route :as route]
-            [compojure.handler :as handler]))
+            [compojure.handler :as handler]
+            [immutant.web :as web]))
 
 (defroutes main-routes
   (GET "/" [] "<h1>Hello from Clojure!</h1>")
