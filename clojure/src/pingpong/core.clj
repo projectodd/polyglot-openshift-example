@@ -14,12 +14,12 @@
    [:body
     [:h1 (apply str (interpose " " msgs))]
     [:p
-     (link-to "/clojure" "clojure"): 
-     (link-to "/clojure/ping" "ping")
+     (link-to "/clojure" "clojure") ": "
+     (link-to "/clojure/ping" "ping") " "
      (link-to "/clojure/pong" "pong")]
     [:p
-     (link-to "/ruby" "ruby"): 
-     (link-to "/ruby/ping" "ping")
+     (link-to "/ruby" "ruby") ": "
+     (link-to "/ruby/ping" "ping") " "
      (link-to "/ruby/pong" "pong")]]))
 
 (defn ping []
