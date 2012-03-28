@@ -9,7 +9,7 @@
   (html5
     [:head
       [:title "Ping Pong"]
-      (include-css "/css/openshift.css")]
+      (include-css "css/openshift.css")]
     [:body
       [:h1 msg]]))
 
