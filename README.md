@@ -40,7 +40,7 @@ Clojure application deployed correctly by going to
 
     http://polyglot-$yourdomain.rhcloud.com/clojure/
 
-Verify you see a "Noir is up and running" message. If both of those
+Verify you see a "Hello from Clojure!" message. If both of those
 worked, try messaging between Ruby and Clojure by using the below
 URLs:
 
