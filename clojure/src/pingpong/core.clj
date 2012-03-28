@@ -8,11 +8,15 @@
 
 (defn layout [& msgs]
   (html5
-    [:head
-      [:title "Ping Pong"]
-      (include-css "css/openshift.css")]
-    [:body
-      [:h1 (apply str (interpose " " msgs))]]))
+   [:head
+    [:title "Ping Pong"]
+    (include-css "css/openshift.css")]
+   [:body
+    [:h1 (apply str (interpose " " msgs))]
+    [:p (link-to "/clojure/ping")]
+    [:p (link-to "/clojure/pong")]
+    [:p (link-to "/ruby/ping")]
+    [:p (link-to "/ruby/pong")]]))
 
 (defn ping []
   (let [msg (str "hello from clojure at " (System/currentTimeMillis))]
