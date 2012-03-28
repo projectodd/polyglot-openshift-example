@@ -61,3 +61,16 @@ cartridge still works and is accessible via
 
 Congratulations! You're up and running with Ruby and Clojure on
 OpenShift.
+
+
+Deploying Additional Applications
+------------------------------
+
+You can deploy multiple Ruby and/or Clojure applications by creating
+more top-level directories for each application and ensuring each Ruby
+application has a torquebox.yml or config/torquebox.yml file and each
+Clojure application has a project.clj or immutant.clj file. The build
+script will automatically deploy the additional applications on the
+next git push. Make sure to specify a web context in your
+torquebox.yml or *.clj for your new application that doesn't conflict
+with the other applications.
