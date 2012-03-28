@@ -105,11 +105,11 @@ find ${OPENSHIFT_REPO_DIR} -type d -maxdepth 1 -print0 | while read -d $'\0' dir
 do
     basename=`basename "${dir}"`
     if [ -e "${dir}/torquebox.yml" ] || [ -e "${dir}/config/torquebox.yml" ]; then
+        echo "Deploying Ruby application in ${dir}"
         # If .bundle isn't currently committed and a Gemfile is then bundle install
         if [ ! -d "${dir}/.bundle" ] && [ -f "${dir}/Gemfile" ]; then
             cd "${dir}" && jruby -J-Xmx256m -S bundle install
         fi
-        echo "Deploying Ruby application in ${dir}"
         cat <<__EOF__ > "${OPENSHIFT_REPO_DIR}/deployments/${basename}-knob.yml"
 ---
 application:
