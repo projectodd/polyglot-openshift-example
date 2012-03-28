@@ -35,7 +35,7 @@ test that your Ruby application deployed correctly by going to
 
     http://polyglot-$yourdomain.rhcloud.com/ruby/
 
-Verify you see a "Welcome to OpenShift" page served. Test that your
+Verify you see a "Hello from Ruby!" page served. Test that your
 Clojure application deployed correctly by going to
 
     http://polyglot-$yourdomain.rhcloud.com/clojure/
