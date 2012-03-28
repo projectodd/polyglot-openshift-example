@@ -13,10 +13,14 @@
     (include-css "css/openshift.css")]
    [:body
     [:h1 (apply str (interpose " " msgs))]
-    [:p (link-to "/clojure/ping" "/clojure/ping")]
-    [:p (link-to "/clojure/pong" "/clojure/pong")]
-    [:p (link-to "/ruby/ping" "/ruby/ping")]
-    [:p (link-to "/ruby/pong" "/ruby/pong")]]))
+    [:p
+     (link-to "/clojure" "clojure"): 
+     (link-to "/clojure/ping" "ping")
+     (link-to "/clojure/pong" "pong")]
+    [:p
+     (link-to "/ruby" "ruby"): 
+     (link-to "/ruby/ping" "ping")
+     (link-to "/ruby/pong" "pong")]]))
 
 (defn ping []
   (let [msg (str "hello from clojure at " (System/currentTimeMillis))]
