@@ -79,7 +79,7 @@ fi
 
 # Install jruby-openssl if needed
 if ! jruby -S gem list | grep jruby-openssl > /dev/null; then
-  jruby -S gem install jruby-openssl
+    jruby -S gem install jruby-openssl
 fi
 
 # Install Rack if needed
@@ -92,11 +92,6 @@ if ! jruby -S gem list | grep "torquebox (${TORQUEBOX_VERSION})" > /dev/null; th
     jruby -S gem install torquebox -v ${TORQUEBOX_VERSION}
 fi
 
-# If .bundle isn't currently committed and a Gemfile is then bundle install
-if [ ! -d ${OPENSHIFT_REPO_DIR}/.bundle ] && [ -f ${OPENSHIFT_REPO_DIR}/ruby/Gemfile ]; then
-    jruby -J-Xmx192m -S bundle install --gemfile ${OPENSHIFT_REPO_DIR}/ruby/Gemfile
-fi
-
 # Ensure a deployments directory exists
 mkdir -p ${OPENSHIFT_REPO_DIR}/deployments
 
@@ -104,20 +99,30 @@ mkdir -p ${OPENSHIFT_REPO_DIR}/deployments
 rm -f ${OPENSHIFT_REPO_DIR}/deployments/*.yml
 rm -f ${OPENSHIFT_REPO_DIR}/deployments/*.clj
 
-# Create a deployment descriptor for the apps
-cat <<__EOF__ > ${OPENSHIFT_REPO_DIR}/deployments/ruby-knob.yml
+
+# Find all Ruby and Clojure projects and create deployment descriptors
+find ${OPENSHIFT_REPO_DIR} -type d -maxdepth 1 -print0 | while read -d $'\0' dir
+do
+    basename=`basename "${dir}"`
+    if [ -e "${dir}/torquebox.yml" ] || [ -e "${dir}/config/torquebox.yml" ]; then
+        # If .bundle isn't currently committed and a Gemfile is then bundle install
+        if [ ! -d "${dir}/.bundle" ] && [ -f "${dir}/Gemfile" ]; then
+            cd "${dir}" && jruby -J-Xmx256m -S bundle install
+        fi
+        echo "Deploying Ruby application in ${dir}"
+        cat <<__EOF__ > "${OPENSHIFT_REPO_DIR}/deployments/${basename}-knob.yml"
 ---
 application:
-  root: ${OPENSHIFT_REPO_DIR}/ruby
-web:
-  context: /ruby
+  root: ${dir}
 environment:
   RACK_ENV: ${RACK_ENV}
 __EOF__
-touch ${OPENSHIFT_REPO_DIR}/deployments/ruby-knob.yml.dodeploy
-
-cat <<__EOF__ > ${OPENSHIFT_REPO_DIR}/deployments/clojure-app.clj
-{:root "${OPENSHIFT_REPO_DIR}/clojure"
- :context-path "/clojure" }
+        touch "${OPENSHIFT_REPO_DIR}/deployments/${basename}-knob.yml.dodeploy"
+    elif [ -e "${dir}/project.clj" ] || [ -e "${dir}/immutant.clj" ]; then
+        echo "Deploying Clojure application in ${dir}"
+        cat <<__EOF__ > ${OPENSHIFT_REPO_DIR}/deployments/${basename}.clj
+{:root "${dir}"}
 __EOF__
-touch ${OPENSHIFT_REPO_DIR}/deployments/clojure-app.clj.dodeploy
+        touch ${OPENSHIFT_REPO_DIR}/deployments/${basename}.clj.dodeploy
+    fi
+done
