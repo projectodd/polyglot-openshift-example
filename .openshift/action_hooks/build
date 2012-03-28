@@ -93,8 +93,8 @@ if ! jruby -S gem list | grep "torquebox (${TORQUEBOX_VERSION})" > /dev/null; th
 fi
 
 # If .bundle isn't currently committed and a Gemfile is then bundle install
-if [ ! -d ${OPENSHIFT_REPO_DIR}/.bundle ] && [ -f ${OPENSHIFT_REPO_DIR}/rack/Gemfile ]; then
-    jruby -J-Xmx192m -S bundle install --gemfile ${OPENSHIFT_REPO_DIR}/rack/Gemfile
+if [ ! -d ${OPENSHIFT_REPO_DIR}/.bundle ] && [ -f ${OPENSHIFT_REPO_DIR}/ruby/Gemfile ]; then
+    jruby -J-Xmx192m -S bundle install --gemfile ${OPENSHIFT_REPO_DIR}/ruby/Gemfile
 fi
 
 # Ensure a deployments directory exists
@@ -121,14 +121,3 @@ cat <<__EOF__ > ${OPENSHIFT_REPO_DIR}/deployments/clojure-app.clj
  :context-path "/clojure" }
 __EOF__
 touch ${OPENSHIFT_REPO_DIR}/deployments/clojure-app.clj.dodeploy
-
-# Create a deployment descriptor for long-lived queues
-cat <<__EOF__ > ${OPENSHIFT_REPO_DIR}/deployments/queues-knob.yml
----
-queues:
-  /queues/ruby:
-    durable: false
-  /queues/clojure:
-    durable: false
-__EOF__
-touch ${OPENSHIFT_REPO_DIR}/deployments/queues-knob.yml.dodeploy
