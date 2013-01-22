@@ -1,3 +1,14 @@
+THIS IS OBSOLETE
+================
+
+This example is mostly obsolete. Better examples are found here:
+
+* https://github.com/immutant/openshift-quickstart
+* https://github.com/torquebox/openshift-quickstart
+
+But they don't support running both Ruby and Clojure apps
+simultaneously on a single OpenShift "gear" without a lot of tweakage.
+
 TorqueBox and Immutant on OpenShift Express
 ===========================================
 
